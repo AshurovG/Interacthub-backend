@@ -113,8 +113,8 @@
     "strict": true,
     "esModuleInterop": true,
     "outDir": "./dist",
-    "rootDir": "./src"
+    "rootDir": "API"
   },
-  "include": ["src/**/*.ts"],
+  "include": ["API/**/*.ts"],
   "exclude": ["node_modules"]
 }

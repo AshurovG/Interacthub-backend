@@ -1,0 +1,33 @@
+{
+    "tables": {
+        "Users": {
+            "tableName": "Users",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "firstName": {
+                    "field": "firstName",
+                    "seqType": "Sequelize.STRING"
+                },
+                "lastName": {
+                    "field": "lastName",
+                    "seqType": "Sequelize.STRING"
+                },
+                "email": {
+                    "field": "email",
+                    "seqType": "Sequelize.STRING"
+                }
+            },
+            "indexes": []
+        }
+    },
+    "path": "/Users/ashurovgeorgy/Desktop/Проекты/SEMPchat/SEMP-backend/migrations/_current.json",
+    "backupPath": "/Users/ashurovgeorgy/Desktop/Проекты/SEMPchat/SEMP-backend/migrations/_current_bak.json",
+    "exists": false,
+    "revision": 1
+}

@@ -1,0 +1,26 @@
+{
+  "development": {
+    "username": "ashurovgeorgy",
+    "password": "13082003",
+    "database": "semp",
+    "host": "localhost",
+    "port": 5432,
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "ashurovgeorgy",
+    "password": "13082003",
+    "database": "semp",
+    "host": "localhost",
+    "port": 5432,
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "ashurovgeorgy",
+    "password": "13082003",
+    "database": "semp",
+    "host": "localhost",
+    "port": 5432,
+    "dialect": "postgres"
+  }
+}
