@@ -1,25 +1,16 @@
-const db = require("../db");
+const { dbConf } = require("../../db");
+const User = require("../../models/user");
+const { Sequelize, DataTypes } = require("sequelize");
 
 class UsersRepository {
   static async getUsers() {
-    // return new Promise((resolve, reject) => {
-    //   db.query("SELECT * FROM products", (error: any, results: any) => {
-    //     if (error) {
-    //       reject(error);
-    //     } else {
-    //       const data = results.rows;
-    //       resolve(data);
-    //     }
-    //   });
-    // });
-
     try {
-      await db.authenticate();
-      console.log("Соединение с БД было успешно установлено");
-    } catch (e) {
-      console.log("Невозможно выполнить подключение к БД: ", e);
+      const users = await User().findAll();
+      return users;
+    } catch (error) {
+      console.error("Ошибка при получении пользователей:", error);
+      throw error;
     }
-    return "repository";
   }
 }
 

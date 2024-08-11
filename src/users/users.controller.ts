@@ -27,6 +27,8 @@ class UsersCotroller {
         }
       });
   }
+
+  async getUser(req: any, res: any) {}
 }
 
 module.exports = new UsersCotroller();

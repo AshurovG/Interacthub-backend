@@ -4,9 +4,8 @@
             "tableName": "Users",
             "schema": {
                 "id": {
-                    "allowNull": false,
-                    "primaryKey": true,
                     "autoIncrement": true,
+                    "primaryKey": true,
                     "field": "id",
                     "seqType": "Sequelize.INTEGER"
                 },
@@ -28,6 +27,6 @@
     },
     "path": "/Users/ashurovgeorgy/Desktop/Проекты/SEMPchat/SEMP-backend/migrations/_current.json",
     "backupPath": "/Users/ashurovgeorgy/Desktop/Проекты/SEMPchat/SEMP-backend/migrations/_current_bak.json",
-    "exists": true,
-    "revision": 2
+    "exists": false,
+    "revision": 1
 }
