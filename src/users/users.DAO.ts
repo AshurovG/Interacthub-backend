@@ -52,6 +52,28 @@ class UsersDAO {
       throw error;
     }
   }
+
+  static async postUser(
+    firstname: string,
+    lastname: string,
+    position: string,
+    telegram: string,
+    phoneNumber: string,
+    birthDate: string
+  ) {
+    try {
+      await UsersRepository.postUser(
+        firstname,
+        lastname,
+        position,
+        telegram,
+        phoneNumber,
+        birthDate
+      );
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 module.exports = {

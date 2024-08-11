@@ -12,6 +12,25 @@ class UsersRepository {
       throw error;
     }
   }
+
+  static async postUser(
+    firstname: string,
+    lastname: string,
+    position: string,
+    telegram: string,
+    phoneNumber: string,
+    birthDate: string
+  ) {
+    const newUser = await User().build({
+      firstname,
+      lastname,
+      position,
+      telegram,
+      phoneNumber,
+      birthDate,
+    });
+    await newUser.save();
+  }
 }
 
 module.exports = {
