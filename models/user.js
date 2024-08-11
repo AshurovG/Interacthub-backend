@@ -9,9 +9,12 @@ module.exports = () => {
       autoIncrement: true,
       primaryKey: true,
     },
-    firstName: DataTypes.STRING,
-    lastName: DataTypes.STRING,
+    firstname: DataTypes.STRING,
+    lastname: DataTypes.STRING,
+    position: DataTypes.CHAR(50),
     telegram: DataTypes.STRING,
+    phoneNumber: DataTypes.CHAR(30),
+    birthDate: DataTypes.DATEONLY,
   });
 
   return User;
