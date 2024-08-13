@@ -34,11 +34,19 @@ class UsersCotroller {
   }
 
   async postUser(req: any, res: any) {
-    const { firstname, lastname, position, telegram, phoneNumber, birthDate } =
-      req.body;
+    const {
+      firstname,
+      lastname,
+      department,
+      position,
+      telegram,
+      phoneNumber,
+      birthDate,
+    } = req.body;
     UsersDAO.postUser(
       firstname,
       lastname,
+      department,
       position,
       telegram,
       phoneNumber,

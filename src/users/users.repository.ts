@@ -16,6 +16,7 @@ class UsersRepository {
   static async postUser(
     firstname: string,
     lastname: string,
+    department: string,
     position: string,
     telegram: string,
     phoneNumber: string,
@@ -24,6 +25,7 @@ class UsersRepository {
     const newUser = await User().build({
       firstname,
       lastname,
+      department,
       position,
       telegram,
       phoneNumber,

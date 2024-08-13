@@ -11,10 +11,12 @@ module.exports = () => {
     },
     firstname: DataTypes.STRING,
     lastname: DataTypes.STRING,
+    department: DataTypes.CHAR(100),
     position: DataTypes.CHAR(50),
     telegram: DataTypes.STRING,
     phoneNumber: DataTypes.CHAR(30),
     birthDate: DataTypes.DATEONLY,
+    lastAccessCode: DataTypes.STRING,
   });
 
   return User;
