@@ -1,4 +1,6 @@
 const { UsersRepository } = require("./users.repository");
+const { CustomError } = require("../consts");
+import crypto from "crypto";
 
 class UsersDAO {
   //   id: number;
@@ -70,6 +72,27 @@ class UsersDAO {
         phoneNumber,
         birthDate
       );
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async codeGen(telegram: string) {
+    try {
+      const isUserExists = await UsersRepository.checkUser(telegram);
+      if (!isUserExists) {
+        const error = new CustomError("profile has not been found", 404);
+        throw error;
+      }
+
+      const randomBytes = crypto.randomBytes(10);
+      const randomString = randomBytes
+        .toString("base64")
+        .replace(/\+/g, "")
+        .replace(/\//g, "");
+      const finalRandomString = randomString.slice(0, -2);
+      await UsersRepository.codeGen(telegram, finalRandomString);
+      return { code: finalRandomString };
     } catch (error) {
       throw error;
     }

@@ -1,4 +1,4 @@
-const { dbConf } = require("../../db");
+const { dbConf, redisConf, handleRedisOperation } = require("../../db");
 const User = require("../../models/user");
 const { Sequelize, DataTypes } = require("sequelize");
 
@@ -30,6 +30,22 @@ class UsersRepository {
       birthDate,
     });
     await newUser.save();
+  }
+
+  static async checkUser(telegram: string) {
+    const existingUser = await User().findOne({ where: { telegram } });
+
+    if (existingUser) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  static async codeGen(telegram: string, code: string) {
+    await handleRedisOperation(async () => {
+      await redisConf.set(`${telegram}:lastCode`, code);
+    });
   }
 }
 

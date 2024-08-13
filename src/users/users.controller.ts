@@ -1,13 +1,14 @@
 const { UsersDAO } = require("./users.DAO");
+const { CustomError, CustomErrorType } = require("../consts");
 
-class CustomError extends Error {
-  status: number;
+// class CustomError extends Error {
+//   status: number;
 
-  constructor(message: string, status: number) {
-    super(message);
-    this.status = status;
-  }
-}
+//   constructor(message: string, status: number) {
+//     super(message);
+//     this.status = status;
+//   }
+// }
 
 class UsersCotroller {
   async getUsers(req: any, res: any) {
@@ -15,11 +16,15 @@ class UsersCotroller {
       .then((data: any) => {
         res.json(data);
       })
-      .catch((error: CustomError) => {
+      .catch((error: typeof CustomError) => {
         if (error.status === 500) {
           res
             .status(500)
             .send({ status: "Problem", message: "Problem with database" });
+        } else if (error.status) {
+          res
+            .status(error.status)
+            .send({ status: "Bad Request", message: error.message });
         } else {
           res
             .status(400)
@@ -42,7 +47,7 @@ class UsersCotroller {
       .then((data: any) => {
         res.json(data);
       })
-      .catch((error: CustomError) => {
+      .catch((error: typeof CustomError) => {
         if (error.status === 500) {
           res
             .status(500)
@@ -54,6 +59,30 @@ class UsersCotroller {
         }
       });
   }
+
+  async codeGen(req: any, res: any) {
+    const { telegram } = req.body;
+    await UsersDAO.codeGen(telegram)
+      .then((data: any) => {
+        res.json(data);
+      })
+      .catch((error: typeof CustomError) => {
+        if (error.status === 500) {
+          res
+            .status(500)
+            .send({ status: "Problem", message: "Problem with database" });
+        } else if (error.status) {
+          res
+            .status(error.status)
+            .send({ status: "Bad Request", message: error.message });
+        } else {
+          res
+            .status(400)
+            .send({ status: "Bad Request", message: error.message });
+        }
+      });
+  }
 }
 
 module.exports = new UsersCotroller();
+export {};
