@@ -16,7 +16,6 @@ module.exports = () => {
     telegram: DataTypes.STRING,
     phoneNumber: DataTypes.CHAR(30),
     birthDate: DataTypes.DATEONLY,
-    lastAccessCode: DataTypes.STRING,
   });
 
   return User;
