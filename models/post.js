@@ -8,8 +8,14 @@ module.exports = () => {
       autoIncrement: true,
       primaryKey: true,
     },
-    text: DataTypes.STRING,
-    image: DataTypes.CHAR(200),
+    text: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    image: {
+      type: DataTypes.CHAR(500),
+      allowNull: true,
+    },
     publicationDate: DataTypes.DATE,
   });
 
