@@ -1,14 +1,5 @@
 const { UsersDAO } = require("./users.DAO");
-const { CustomError, CustomErrorType } = require("../consts");
-
-// class CustomError extends Error {
-//   status: number;
-
-//   constructor(message: string, status: number) {
-//     super(message);
-//     this.status = status;
-//   }
-// }
+const { CustomError } = require("../consts");
 
 class UsersCotroller {
   async getUsers(req: any, res: any) {
