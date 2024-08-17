@@ -53,6 +53,15 @@ class PostsDAO {
       throw e;
     }
   }
+
+  static async deletePost(id: number) {
+    try {
+      await this._isPostExist(id);
+      await PostsRepository.deletePost(id);
+    } catch (e) {
+      throw e;
+    }
+  }
 }
 
 module.exports = {

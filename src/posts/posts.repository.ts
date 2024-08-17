@@ -45,6 +45,14 @@ class PostsRepository {
       throw e;
     }
   }
+
+  static async deletePost(id: number) {
+    try {
+      await Post().destroy({ where: { id } });
+    } catch (e) {
+      throw e;
+    }
+  }
 }
 
 module.exports = {
