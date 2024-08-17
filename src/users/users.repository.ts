@@ -49,6 +49,15 @@ class UsersRepository {
       await redisConf.set(`${telegram}:lastCode`, code);
     });
   }
+
+  static async auth(telegram: string, sessionID: string) {
+    let lastCode;
+    await handleRedisOperation(async () => {
+      await redisConf.set(`${telegram}:sessionID`, sessionID);
+      lastCode = await redisConf.get(`${telegram}:lastCode`);
+    });
+    return lastCode;
+  }
 }
 
 module.exports = {
