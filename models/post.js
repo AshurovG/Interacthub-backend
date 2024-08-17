@@ -10,11 +10,9 @@ module.exports = () => {
     },
     text: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     image: {
       type: DataTypes.CHAR(500),
-      allowNull: true,
     },
     publicationDate: DataTypes.DATE,
   });

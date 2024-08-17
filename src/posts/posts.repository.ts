@@ -11,11 +11,12 @@ class PostsRepository {
     }
   }
 
-  static async postPost(text: string, image: string, date: Date) {
+  static async postPost(text: string, image: string, publicationDate: Date) {
+    console.log("date from repository", publicationDate);
     const newPost = await Post().build({
       text,
       image,
-      date,
+      publicationDate,
     });
     await newPost.save();
   }
