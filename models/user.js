@@ -13,9 +13,12 @@ module.exports = () => {
     lastname: DataTypes.STRING,
     department: DataTypes.CHAR(100),
     position: DataTypes.CHAR(50),
-    telegram: DataTypes.STRING,
+    telegram: DataTypes.CHAR(500),
+    whatsapp: DataTypes.CHAR(500),
     phoneNumber: DataTypes.CHAR(30),
     birthDate: DataTypes.DATEONLY,
+    isAdmin: DataTypes.BOOLEAN,
+    lastCode: DataTypes.STRING,
   });
 
   return User;
