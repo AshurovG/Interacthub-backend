@@ -1,5 +1,5 @@
 const { Sequelize } = require("sequelize");
-const redis = require("redis");
+const redis = require("ioredis");
 
 const config = require("./config/config.json")[
   process.env.NODE_ENV || "development"
@@ -25,27 +25,8 @@ const redisConf = redis.createClient({
 });
 
 async function handleRedisOperation(operation) {
-  await redisConf.connect();
-  try {
-    await operation();
-  } finally {
-    await redisConf.disconnect();
-  }
+  await operation();
 }
-
-// Пример использования
-// await handleRedisOperation(async () => {
-//   const fields = ["sessionID", "lastCode"];
-//   const values = ["sessionID", "lastCode"];
-
-//   // Используем цикл для добавления каждого поля и значения
-//   for (let i = 0; i < fields.length; i++) {
-//     await redisConf.set(`${telegram}:${fields[i]}`, values[i]);
-//   }
-
-//   const result = await redisConf.get(`${telegram}:lastCode`);
-//   console.log(result);
-// });
 
 module.exports = {
   dbConf,
