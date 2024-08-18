@@ -12,14 +12,28 @@ class UsersDAO {
     }
   }
 
+  static async getUser(id: number) {
+    try {
+      const query = await UsersRepository.getUser(id);
+      if (!query) {
+        throw new CustomError(`There is no user with id=${id}`, 404);
+      }
+      return query;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   static async postUser(
     firstname: string,
     lastname: string,
     department: string,
     position: string,
     telegram: string,
+    whatsapp: string,
     phoneNumber: string,
-    birthDate: string
+    birthDate: string,
+    isAdmin: boolean
   ) {
     try {
       await UsersRepository.postUser(
@@ -28,53 +42,41 @@ class UsersDAO {
         department,
         position,
         telegram,
+        whatsapp,
         phoneNumber,
-        birthDate
+        birthDate,
+        isAdmin
       );
     } catch (error) {
       throw error;
     }
   }
 
-  static async codeGen(telegram: string) {
+  static async updateUser(
+    firstname: string,
+    lastname: string,
+    department: string,
+    position: string,
+    telegram: string,
+    whatsapp: string,
+    phoneNumber: string,
+    birthDate: string,
+    isAdmin: boolean,
+    sessionID: string
+  ) {
     try {
-      const isUserExists = await UsersRepository.checkUser(telegram);
-      if (!isUserExists) {
-        throw new CustomError("profile has not been found", 404);
-      }
-
-      const randomBytes = crypto.randomBytes(10);
-      const randomString = randomBytes
-        .toString("base64")
-        .replace(/\+/g, "")
-        .replace(/\//g, "");
-      const finalRandomString = randomString.slice(0, -2);
-      await UsersRepository.codeGen(telegram, finalRandomString);
-      return { code: finalRandomString };
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  static async auth(telegram: string, code: string) {
-    try {
-      const isUserExists = await UsersRepository.checkUser(telegram);
-      if (!isUserExists) {
-        const error = new CustomError("profile has not been found", 404);
-        throw error;
-      }
-
-      const randomBytes = crypto.randomBytes(50);
-      const randomString = randomBytes
-        .toString("base64")
-        .replace(/\+/g, "")
-        .replace(/\//g, "");
-
-      const lastCode = await UsersRepository.auth(telegram, randomString);
-      if (lastCode !== code) {
-        throw new CustomError("invalid access code", 401);
-      }
-      return randomString;
+      // const correctSessionID = await getSessionID();
+      await UsersRepository.postUser(
+        firstname,
+        lastname,
+        department,
+        position,
+        telegram,
+        whatsapp,
+        phoneNumber,
+        birthDate,
+        isAdmin
+      );
     } catch (error) {
       throw error;
     }

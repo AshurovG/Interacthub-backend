@@ -24,44 +24,10 @@ class UsersCotroller {
       });
   }
 
-  async postUser(req: any, res: any) {
-    const {
-      firstname,
-      lastname,
-      department,
-      position,
-      telegram,
-      phoneNumber,
-      birthDate,
-    } = req.body;
-    UsersDAO.postUser(
-      firstname,
-      lastname,
-      department,
-      position,
-      telegram,
-      phoneNumber,
-      birthDate
-    )
-      .then((data: any) => {
-        res.json(data);
-      })
-      .catch((error: typeof CustomError) => {
-        if (error.status === 500) {
-          res
-            .status(500)
-            .send({ status: "Problem", message: "Problem with database" });
-        } else {
-          res
-            .status(400)
-            .send({ status: "Bad Request", message: error.message });
-        }
-      });
-  }
-
-  async codeGen(req: any, res: any) {
-    const { telegram } = req.body;
-    await UsersDAO.codeGen(telegram)
+  async getUser(req: any, res: any) {
+    // const sessionID = (req.cookies["sessionID"] = req.cookies["sessionID"]);
+    const { id } = req.params;
+    UsersDAO.getUser(id)
       .then((data: any) => {
         res.json(data);
       })
@@ -82,18 +48,72 @@ class UsersCotroller {
       });
   }
 
-  async auth(req: any, res: any) {
-    const { telegram, code } = req.body;
-    await UsersDAO.auth(telegram, code)
+  async postUser(req: any, res: any) {
+    const {
+      firstname,
+      lastname,
+      department,
+      position,
+      telegram,
+      whatsapp,
+      phoneNumber,
+      birthDate,
+      isAdmin,
+    } = req.body;
+    UsersDAO.postUser(
+      firstname,
+      lastname,
+      department,
+      position,
+      telegram,
+      whatsapp,
+      phoneNumber,
+      birthDate,
+      isAdmin
+    )
       .then((data: any) => {
-        console.log(data);
-        res.cookie("sessionID", data, {
-          httpOnly: true, // Защищает от доступа через клиентский скрипт
-          sameSite: "strict", // TODO поверить безопасность
-          maxAge: 86400000, // 1 день
-          path: "/",
-        });
-        res.status(200).end();
+        res.json(data);
+      })
+      .catch((error: typeof CustomError) => {
+        if (error.status === 500) {
+          res
+            .status(500)
+            .send({ status: "Problem", message: "Problem with database" });
+        } else {
+          res
+            .status(400)
+            .send({ status: "Bad Request", message: error.message });
+        }
+      });
+  }
+
+  async updateUser(req: any, res: any) {
+    const {
+      firstname,
+      lastname,
+      department,
+      position,
+      telegram,
+      whatsapp,
+      phoneNumber,
+      birthDate,
+      isAdmin,
+    } = req.body;
+    const sessionID = (req.cookies["sessionID"] = req.cookies["sessionID"]);
+    UsersDAO.updateUser(
+      firstname,
+      lastname,
+      department,
+      position,
+      telegram,
+      whatsapp,
+      phoneNumber,
+      birthDate,
+      isAdmin,
+      sessionID
+    )
+      .then((data: any) => {
+        res.json(data);
       })
       .catch((error: typeof CustomError) => {
         if (error.status === 500) {

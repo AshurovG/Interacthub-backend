@@ -1,6 +1,8 @@
 const { dbConf, redisConf, handleRedisOperation } = require("../../db");
 const User = require("../../models/user");
 const { Sequelize, DataTypes } = require("sequelize");
+const { AuthRepository } = require("../auth/auth.repository");
+import _ from "lodash";
 
 class UsersRepository {
   static async getUsers() {
@@ -8,7 +10,20 @@ class UsersRepository {
       const users = await User().findAll();
       return users;
     } catch (error) {
-      console.error("Ошибка при получении пользователей:", error);
+      throw error;
+    }
+  }
+
+  static async getUser(id: number) {
+    try {
+      const userInstance = await User().findOne({ where: { id } });
+      if (!userInstance) {
+        return null;
+      }
+      const userData = userInstance.toJSON(); // Преобразование в JSON
+      delete userData.lastCode; // Удаление поля lastCode
+      return userData;
+    } catch (error) {
       throw error;
     }
   }
@@ -19,8 +34,10 @@ class UsersRepository {
     department: string,
     position: string,
     telegram: string,
+    whatsapp: string,
     phoneNumber: string,
-    birthDate: string
+    birthDate: string,
+    isAdmin: boolean
   ) {
     const newUser = await User().build({
       firstname,
@@ -28,35 +45,12 @@ class UsersRepository {
       department,
       position,
       telegram,
+      whatsapp,
       phoneNumber,
       birthDate,
+      isAdmin,
     });
     await newUser.save();
-  }
-
-  static async checkUser(telegram: string) {
-    const existingUser = await User().findOne({ where: { telegram } });
-
-    if (existingUser) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  static async codeGen(telegram: string, code: string) {
-    await handleRedisOperation(async () => {
-      await redisConf.set(`${telegram}:lastCode`, code);
-    });
-  }
-
-  static async auth(telegram: string, sessionID: string) {
-    let lastCode;
-    await handleRedisOperation(async () => {
-      await redisConf.set(`${telegram}:sessionID`, sessionID);
-      lastCode = await redisConf.get(`${telegram}:lastCode`);
-    });
-    return lastCode;
   }
 }
 
