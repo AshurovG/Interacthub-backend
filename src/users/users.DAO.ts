@@ -5,12 +5,24 @@ import crypto from "crypto";
 import { User } from "./types";
 
 class UsersDAO {
+  // TODO: Сделать валидацию полей пользователя
+
+  static async _isUserExist(id: number) {
+    await this.getUser(id);
+  }
+
+  static async _isCurrentUserAdmin(sessionID: string) {
+    if (!(await this.getCurrentUser(sessionID)).isAdmin) {
+      throw new CustomError(`you don't have admin permission`, 403);
+    }
+  }
+
   static async getUsers() {
     try {
       const query = await UsersRepository.getUsers();
       return query;
-    } catch (error) {
-      throw error;
+    } catch (e) {
+      throw e;
     }
   }
 
@@ -21,8 +33,25 @@ class UsersDAO {
         throw new CustomError(`There is no user with id=${id}`, 404);
       }
       return query;
-    } catch (error) {
-      throw error;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static async getCurrentUser(sessionID: string) {
+    try {
+      const currentUser: User = await UsersRepository.getUserBySessionID(
+        sessionID
+      );
+      if (!currentUser) {
+        throw new CustomError(
+          `you don't have permission to update user data`,
+          403
+        );
+      }
+      return currentUser;
+    } catch (e) {
+      throw e;
     }
   }
 
@@ -49,8 +78,8 @@ class UsersDAO {
         birthDate,
         isAdmin
       );
-    } catch (error) {
-      throw error;
+    } catch (e) {
+      throw e;
     }
   }
 
@@ -67,15 +96,7 @@ class UsersDAO {
     sessionID: string
   ) {
     try {
-      const currentUser: User = await UsersRepository.getUserBySessionID(
-        sessionID
-      );
-      if (!currentUser) {
-        throw new CustomError(
-          `you don't have permission to update user data`,
-          403
-        );
-      }
+      const currentUser = await this.getCurrentUser(sessionID);
       if (currentUser.isAdmin) {
         await UsersRepository.updateUser(
           Number(id),
@@ -103,8 +124,18 @@ class UsersDAO {
           403
         );
       }
-    } catch (error) {
-      throw error;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static async deleteUser(id: number, sessionID: string) {
+    try {
+      await this._isCurrentUserAdmin(sessionID);
+      await this._isUserExist(id);
+      await UsersRepository.deleteUser(id);
+    } catch (e) {
+      throw e;
     }
   }
 }

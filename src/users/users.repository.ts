@@ -102,6 +102,14 @@ class UsersRepository {
       throw e;
     }
   }
+
+  static async deleteUser(id: number) {
+    try {
+      await User().destroy({ where: { id } });
+    } catch (e) {
+      throw e;
+    }
+  }
 }
 
 module.exports = {

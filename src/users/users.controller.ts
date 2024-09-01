@@ -130,6 +130,30 @@ class UsersCotroller {
         }
       });
   }
+
+  async deleteUser(req: any, res: any) {
+    const sessionID = (req.cookies["sessionID"] = req.cookies["sessionID"]);
+    const { id } = req.params;
+    UsersDAO.deleteUser(id, sessionID)
+      .then((data: any) => {
+        res.json(data);
+      })
+      .catch((error: typeof CustomError) => {
+        if (error.status === 500) {
+          res
+            .status(500)
+            .send({ status: "Problem", message: "Problem with database" });
+        } else if (error.status) {
+          res
+            .status(error.status)
+            .send({ status: "Bad Request", message: error.message });
+        } else {
+          res
+            .status(400)
+            .send({ status: "Bad Request", message: error.message });
+        }
+      });
+  }
 }
 
 module.exports = new UsersCotroller();
