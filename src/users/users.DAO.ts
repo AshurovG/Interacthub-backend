@@ -1,6 +1,8 @@
 const { UsersRepository } = require("./users.repository");
+const { AuthRepository } = require("../auth/auth.repository");
 const { CustomError } = require("../consts");
 import crypto from "crypto";
+import { User } from "./types";
 
 class UsersDAO {
   static async getUsers() {
@@ -53,11 +55,11 @@ class UsersDAO {
   }
 
   static async updateUser(
+    id: string,
     firstname: string,
     lastname: string,
     department: string,
     position: string,
-    telegram: string,
     whatsapp: string,
     phoneNumber: string,
     birthDate: string,
@@ -65,18 +67,42 @@ class UsersDAO {
     sessionID: string
   ) {
     try {
-      // const correctSessionID = await getSessionID();
-      await UsersRepository.postUser(
-        firstname,
-        lastname,
-        department,
-        position,
-        telegram,
-        whatsapp,
-        phoneNumber,
-        birthDate,
-        isAdmin
+      const currentUser: User = await UsersRepository.getUserBySessionID(
+        sessionID
       );
+      if (!currentUser) {
+        throw new CustomError(
+          `you don't have permission to update user data`,
+          403
+        );
+      }
+      if (currentUser.isAdmin) {
+        await UsersRepository.updateUser(
+          Number(id),
+          firstname,
+          lastname,
+          department,
+          position,
+          whatsapp,
+          phoneNumber,
+          birthDate,
+          isAdmin
+        );
+      } else if (String(currentUser.id) === id && !currentUser.isAdmin) {
+        await UsersRepository.updateUser(
+          id,
+          firstname,
+          lastname,
+          whatsapp,
+          phoneNumber,
+          birthDate
+        );
+      } else {
+        throw new CustomError(
+          `you don't have permission to update user data`,
+          403
+        );
+      }
     } catch (error) {
       throw error;
     }

@@ -25,7 +25,6 @@ class UsersCotroller {
   }
 
   async getUser(req: any, res: any) {
-    // const sessionID = (req.cookies["sessionID"] = req.cookies["sessionID"]);
     const { id } = req.params;
     UsersDAO.getUser(id)
       .then((data: any) => {
@@ -93,19 +92,19 @@ class UsersCotroller {
       lastname,
       department,
       position,
-      telegram,
       whatsapp,
       phoneNumber,
       birthDate,
       isAdmin,
     } = req.body;
     const sessionID = (req.cookies["sessionID"] = req.cookies["sessionID"]);
+    const { id } = req.params;
     UsersDAO.updateUser(
+      id,
       firstname,
       lastname,
       department,
       position,
-      telegram,
       whatsapp,
       phoneNumber,
       birthDate,
