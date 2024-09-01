@@ -1,97 +1,48 @@
 const { PostsDAO } = require("./posts.DAO");
-const { CustomError } = require("../consts");
+const { ErrorHandler } = require("../consts");
+import { Response, Request } from "express";
 
 class PostsCotroller {
-  async getPosts(req: any, res: any) {
-    PostsDAO.getPosts()
-      .then((data: any) => {
-        res.json(data);
-      })
-      .catch((error: typeof CustomError) => {
-        if (error.status === 500) {
-          res
-            .status(500)
-            .send({ status: "Problem", message: "Problem with database" });
-        } else if (error.status) {
-          res
-            .status(error.status)
-            .send({ status: "Bad Request", message: error.message });
-        } else {
-          res
-            .status(400)
-            .send({ status: "Bad Request", message: error.message });
-        }
-      });
+  async getPosts(_: Request, res: Response): Promise<void> {
+    try {
+      const data = await PostsDAO.getPosts();
+      res.json(data);
+    } catch (e) {
+      ErrorHandler.handle(res, e);
+    }
   }
 
-  async postPost(req: any, res: any) {
+  async postPost(req: Request, res: Response): Promise<void> {
     const { text, image } = req.body;
-    PostsDAO.postPost(text, image)
-      .then((data: any) => {
-        res.json(data);
-      })
-      .catch((error: typeof CustomError) => {
-        if (error.status === 500) {
-          res
-            .status(500)
-            .send({ status: "Problem", message: "Problem with database" });
-        } else if (error.status) {
-          res
-            .status(error.status)
-            .send({ status: "Bad Request", message: error.message });
-        } else {
-          res
-            .status(400)
-            .send({ status: "Bad Request", message: error.message });
-        }
-      });
+
+    try {
+      await PostsDAO.postPost(text, image);
+      res.sendStatus(200);
+    } catch (error) {
+      ErrorHandler.handle(res, error);
+    }
   }
 
-  async updatePost(req: any, res: any) {
+  async updatePost(req: Request, res: Response): Promise<void> {
     const { text, image } = req.body;
     const { id } = req.params;
-    PostsDAO.updatePost(text, image, id)
-      .then((data: any) => {
-        res.json(data);
-      })
-      .catch((error: typeof CustomError) => {
-        if (error.status === 500) {
-          res
-            .status(500)
-            .send({ status: "Problem", message: "Problem with database" });
-        } else if (error.status) {
-          res
-            .status(error.status)
-            .send({ status: "Bad Request", message: error.message });
-        } else {
-          res
-            .status(400)
-            .send({ status: "Bad Request", message: error.message });
-        }
-      });
+    try {
+      await PostsDAO.updatePost(text, image, id);
+      res.sendStatus(200);
+    } catch (error) {
+      ErrorHandler.handle(res, error);
+    }
   }
 
-  async deletePost(req: any, res: any) {
+  async deletePost(req: Request, res: Response): Promise<void> {
     const { id } = req.params;
-    PostsDAO.deletePost(id)
-      .then((data: any) => {
-        res.json(data);
-      })
-      .catch((error: typeof CustomError) => {
-        if (error.status === 500) {
-          res
-            .status(500)
-            .send({ status: "Problem", message: "Problem with database" });
-        } else if (error.status) {
-          res
-            .status(error.status)
-            .send({ status: "Bad Request", message: error.message });
-        } else {
-          res
-            .status(400)
-            .send({ status: "Bad Request", message: error.message });
-        }
-      });
+
+    try {
+      await PostsDAO.deletePost(id);
+      res.sendStatus(200);
+    } catch (error) {
+      ErrorHandler.handle(res, error);
+    }
   }
 }
 

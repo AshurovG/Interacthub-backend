@@ -1,53 +1,29 @@
 const { UsersDAO } = require("./users.DAO");
-const { CustomError } = require("../consts");
+const { ErrorHandler } = require("../consts");
+import { Response, Request } from "express";
 
 class UsersCotroller {
-  async getUsers(req: any, res: any) {
-    UsersDAO.getUsers()
-      .then((data: any) => {
-        res.json(data);
-      })
-      .catch((error: typeof CustomError) => {
-        if (error.status === 500) {
-          res
-            .status(500)
-            .send({ status: "Problem", message: "Problem with database" });
-        } else if (error.status) {
-          res
-            .status(error.status)
-            .send({ status: "Bad Request", message: error.message });
-        } else {
-          res
-            .status(400)
-            .send({ status: "Bad Request", message: error.message });
-        }
-      });
+  async getUsers(req: Request, res: Response): Promise<void> {
+    try {
+      const data = await UsersDAO.getUsers();
+      res.json(data);
+    } catch (e) {
+      ErrorHandler.handle(res, e);
+    }
   }
 
-  async getUser(req: any, res: any) {
+  async getUser(req: Request, res: Response): Promise<void> {
     const { id } = req.params;
-    UsersDAO.getUser(id)
-      .then((data: any) => {
-        res.json(data);
-      })
-      .catch((error: typeof CustomError) => {
-        if (error.status === 500) {
-          res
-            .status(500)
-            .send({ status: "Problem", message: "Problem with database" });
-        } else if (error.status) {
-          res
-            .status(error.status)
-            .send({ status: "Bad Request", message: error.message });
-        } else {
-          res
-            .status(400)
-            .send({ status: "Bad Request", message: error.message });
-        }
-      });
+
+    try {
+      const data = await UsersDAO.getUser(id);
+      res.json(data);
+    } catch (e) {
+      ErrorHandler.handle(res, e);
+    }
   }
 
-  async postUser(req: any, res: any) {
+  async postUser(req: Request, res: Response): Promise<void> {
     const {
       firstname,
       lastname,
@@ -59,34 +35,25 @@ class UsersCotroller {
       birthDate,
       isAdmin,
     } = req.body;
-    UsersDAO.postUser(
-      firstname,
-      lastname,
-      department,
-      position,
-      telegram,
-      whatsapp,
-      phoneNumber,
-      birthDate,
-      isAdmin
-    )
-      .then((data: any) => {
-        res.json(data);
-      })
-      .catch((error: typeof CustomError) => {
-        if (error.status === 500) {
-          res
-            .status(500)
-            .send({ status: "Problem", message: "Problem with database" });
-        } else {
-          res
-            .status(400)
-            .send({ status: "Bad Request", message: error.message });
-        }
-      });
+    try {
+      await UsersDAO.postUser(
+        firstname,
+        lastname,
+        department,
+        position,
+        telegram,
+        whatsapp,
+        phoneNumber,
+        birthDate,
+        isAdmin
+      );
+      res.sendStatus(200);
+    } catch (e) {
+      ErrorHandler.handle(res, e);
+    }
   }
 
-  async updateUser(req: any, res: any) {
+  async updateUser(req: Request, res: Response): Promise<void> {
     const {
       firstname,
       lastname,
@@ -99,60 +66,36 @@ class UsersCotroller {
     } = req.body;
     const sessionID = (req.cookies["sessionID"] = req.cookies["sessionID"]);
     const { id } = req.params;
-    UsersDAO.updateUser(
-      id,
-      firstname,
-      lastname,
-      department,
-      position,
-      whatsapp,
-      phoneNumber,
-      birthDate,
-      isAdmin,
-      sessionID
-    )
-      .then((data: any) => {
-        res.json(data);
-      })
-      .catch((error: typeof CustomError) => {
-        if (error.status === 500) {
-          res
-            .status(500)
-            .send({ status: "Problem", message: "Problem with database" });
-        } else if (error.status) {
-          res
-            .status(error.status)
-            .send({ status: "Bad Request", message: error.message });
-        } else {
-          res
-            .status(400)
-            .send({ status: "Bad Request", message: error.message });
-        }
-      });
+
+    try {
+      await UsersDAO.updateUser(
+        id,
+        firstname,
+        lastname,
+        department,
+        position,
+        whatsapp,
+        phoneNumber,
+        birthDate,
+        isAdmin,
+        sessionID
+      );
+      res.sendStatus(200);
+    } catch (e) {
+      ErrorHandler.handle(res, e);
+    }
   }
 
-  async deleteUser(req: any, res: any) {
+  async deleteUser(req: Request, res: Response): Promise<void> {
     const sessionID = (req.cookies["sessionID"] = req.cookies["sessionID"]);
     const { id } = req.params;
-    UsersDAO.deleteUser(id, sessionID)
-      .then((data: any) => {
-        res.json(data);
-      })
-      .catch((error: typeof CustomError) => {
-        if (error.status === 500) {
-          res
-            .status(500)
-            .send({ status: "Problem", message: "Problem with database" });
-        } else if (error.status) {
-          res
-            .status(error.status)
-            .send({ status: "Bad Request", message: error.message });
-        } else {
-          res
-            .status(400)
-            .send({ status: "Bad Request", message: error.message });
-        }
-      });
+
+    try {
+      await UsersDAO.deleteUser(id, sessionID);
+      res.sendStatus(200);
+    } catch (e) {
+      ErrorHandler.handle(res, e);
+    }
   }
 }
 

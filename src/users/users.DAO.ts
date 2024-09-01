@@ -97,6 +97,7 @@ class UsersDAO {
   ) {
     try {
       const currentUser = await this.getCurrentUser(sessionID);
+      await this._isUserExist(Number(id));
       if (currentUser.isAdmin) {
         await UsersRepository.updateUser(
           Number(id),
