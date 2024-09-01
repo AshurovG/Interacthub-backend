@@ -1,5 +1,4 @@
 const { PostsRepository } = require("./posts.repository");
-import { Post } from "./types";
 const { CustomError } = require("../consts");
 
 class PostsDAO {
@@ -10,10 +9,7 @@ class PostsDAO {
   }
 
   static async _isPostExist(id: number) {
-    const post = await this.getPost(id);
-    if (!post) {
-      throw new CustomError(`There is no post with id=${id}`, 404);
-    }
+    await this.getPost(id);
   }
 
   static async getPosts() {
@@ -28,6 +24,9 @@ class PostsDAO {
   static async getPost(id: number) {
     try {
       const query = await PostsRepository.getPost(id);
+      if (!query) {
+        throw new CustomError(`There is no post with id=${id}`, 404);
+      }
       return query;
     } catch (e) {
       throw e;

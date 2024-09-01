@@ -35,9 +35,9 @@ class PostsRepository {
   static async updatePost(text: string, image: string, id: number) {
     try {
       const postToUpdate = await Post().findByPk(id);
-      if (!postToUpdate) {
-        throw new Error("Post not found");
-      }
+      // if (!postToUpdate) {
+      //   throw new Error("Post not found");
+      // }
       postToUpdate.text = text;
       postToUpdate.image = image;
       await postToUpdate.save();
