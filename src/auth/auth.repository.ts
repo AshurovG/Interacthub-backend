@@ -1,20 +1,15 @@
-const { dbConf, redisConf, handleRedisOperation } = require("../../db");
+const { dbConf, redisConf } = require("../../db");
 const User = require("../../models/user");
 
 class AuthRepository {
   static async codeGen(telegram: string, code: string) {
-    await handleRedisOperation(async () => {
-      await redisConf.set(`${telegram}:lastCode`, code);
-    });
+    await User().update({ lastCode: code }, { where: { telegram } });
   }
 
   static async auth(telegram: string, sessionID: string) {
-    let lastCode;
-    await handleRedisOperation(async () => {
-      await redisConf.set(`${telegram}:sessionID`, sessionID);
-      lastCode = await redisConf.get(`${telegram}:lastCode`);
-    });
-    return lastCode;
+    await redisConf.setex(`${sessionID}`, 86400, telegram); // сессия хранится 1 сутки
+    const user = await User().findOne({ where: { telegram } });
+    return user.lastCode;
   }
 
   static async checkUser(telegram: string) {
@@ -25,6 +20,12 @@ class AuthRepository {
     } else {
       return false;
     }
+  }
+
+  static async getTelegramBySessionID(sessionID: string) {
+    const telegram = await redisConf.get(sessionID);
+    // console.log("telegram is", telegram);
+    return telegram;
   }
 }
 

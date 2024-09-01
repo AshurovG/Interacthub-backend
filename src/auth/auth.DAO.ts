@@ -10,14 +10,14 @@ class AuthDAO {
         throw new CustomError("profile has not been found", 404);
       }
 
-      const randomBytes = crypto.randomBytes(10);
-      const randomString = randomBytes
+      let randomBytes = crypto.randomBytes(10);
+      let randomCode = randomBytes
         .toString("base64")
         .replace(/\+/g, "")
         .replace(/\//g, "");
-      const finalRandomString = randomString.slice(0, -2);
-      await AuthRepository.codeGen(telegram, finalRandomString);
-      return { code: finalRandomString };
+      randomCode = randomCode.slice(0, -2);
+      await AuthRepository.codeGen(telegram, randomCode);
+      return { code: randomCode };
     } catch (error) {
       throw error;
     }
@@ -32,16 +32,16 @@ class AuthDAO {
       }
 
       const randomBytes = crypto.randomBytes(50);
-      const randomString = randomBytes
+      const randomSessionID = randomBytes
         .toString("base64")
         .replace(/\+/g, "")
         .replace(/\//g, "");
 
-      const lastCode = await AuthRepository.auth(telegram, randomString);
+      const lastCode = await AuthRepository.auth(telegram, randomSessionID);
       if (lastCode !== code) {
         throw new CustomError("invalid access code", 401);
       }
-      return randomString;
+      return randomSessionID;
     } catch (error) {
       throw error;
     }
