@@ -34,6 +34,14 @@ class ChatsRepository {
       throw e;
     }
   }
+
+  static async deleteChat(id: number) {
+    try {
+      await Chat().destroy({ where: { id } });
+    } catch (e) {
+      throw e;
+    }
+  }
 }
 
 module.exports = {

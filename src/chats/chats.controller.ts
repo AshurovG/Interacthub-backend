@@ -34,6 +34,17 @@ class ChatsController {
       ErrorHandler.handle(res, error);
     }
   }
+
+  async deleteChat(req: Request, res: Response): Promise<void> {
+    const { id } = req.params;
+
+    try {
+      await ChatsDAO.deleteChat(Number(id));
+      res.sendStatus(200);
+    } catch (error) {
+      ErrorHandler.handle(res, error);
+    }
+  }
 }
 
 module.exports = new ChatsController();
