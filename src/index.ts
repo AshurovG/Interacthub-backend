@@ -12,7 +12,13 @@ const chatsRouter = require('./chats/chats.routes');
 const app = express();
 const PORT = 8000;
 
-app.use(cors());
+app.use(
+  cors({
+    origin: 'http://localhost:5173',
+    credentials: true,
+  })
+);
+// app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());

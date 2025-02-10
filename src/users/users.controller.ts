@@ -1,6 +1,6 @@
-const { UsersDAO } = require("./users.DAO");
-const { ErrorHandler } = require("../consts");
-import { Response, Request } from "express";
+const { UsersDAO } = require('./users.DAO');
+const { ErrorHandler } = require('../consts');
+import { Response, Request } from 'express';
 
 class UsersCotroller {
   async getUsers(req: Request, res: Response): Promise<void> {
@@ -64,7 +64,7 @@ class UsersCotroller {
       birthDate,
       isAdmin,
     } = req.body;
-    const sessionID = (req.cookies["sessionID"] = req.cookies["sessionID"]);
+    const sessionID = (req.cookies['sessionID'] = req.cookies['sessionID']);
     const { id } = req.params;
 
     try {
@@ -87,7 +87,7 @@ class UsersCotroller {
   }
 
   async deleteUser(req: Request, res: Response): Promise<void> {
-    const sessionID = (req.cookies["sessionID"] = req.cookies["sessionID"]);
+    const { sessionID } = req.cookies;
     const { id } = req.params;
 
     try {

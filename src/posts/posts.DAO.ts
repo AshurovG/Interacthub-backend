@@ -1,10 +1,10 @@
-const { PostsRepository } = require("./posts.repository");
-const { CustomError } = require("../consts");
+const { PostsRepository } = require('./posts.repository');
+const { CustomError } = require('../consts');
 
 class PostsDAO {
   static _isImageOrTextEmpty(text: string, image: string) {
     if (!image && !text) {
-      throw new CustomError("image and text are empty", 400);
+      throw new CustomError('image and text are empty', 400);
     }
   }
 

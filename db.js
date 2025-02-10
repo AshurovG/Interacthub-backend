@@ -1,8 +1,8 @@
-const { Sequelize } = require("sequelize");
-const redis = require("ioredis");
+const { Sequelize } = require('sequelize');
+const redis = require('ioredis');
 
-const config = require("./config/config.json")[
-  process.env.NODE_ENV || "development"
+const config = require('./config/config.json')[
+  process.env.NODE_ENV || 'development'
 ];
 
 const dbConf = new Sequelize(
@@ -20,7 +20,7 @@ const dbConf = new Sequelize(
 );
 
 const redisConf = redis.createClient({
-  host: "localhost",
+  host: 'localhost',
   port: 6379,
 });
 

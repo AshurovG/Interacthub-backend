@@ -1,8 +1,8 @@
-const { dbConf, redisConf, handleRedisOperation } = require("../../db");
-const User = require("../../models/user");
-const { AuthRepository } = require("../auth/auth.repository");
-const { Sequelize, DataTypes } = require("sequelize");
-import _ from "lodash";
+const { dbConf, redisConf, handleRedisOperation } = require('../../db');
+const User = require('../../models/user');
+const { AuthRepository } = require('../auth/auth.repository');
+const { Sequelize, DataTypes } = require('sequelize');
+import _ from 'lodash';
 
 class UsersRepository {
   static async getUsers() {
@@ -83,7 +83,7 @@ class UsersRepository {
     isAdmin: boolean
   ) {
     try {
-      console.log("repository");
+      console.log('repository');
       console.log(id, typeof id);
       await User().update(
         {

@@ -1,5 +1,181 @@
 {
     "tables": {
+        "Chats": {
+            "tableName": "Chats",
+            "schema": {
+                "id": {
+                    "autoIncrement": true,
+                    "primaryKey": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "title": {
+                    "allowNull": false,
+                    "unique": true,
+                    "field": "title",
+                    "seqType": "Sequelize.CHAR(50)"
+                },
+                "description": {
+                    "field": "description",
+                    "seqType": "Sequelize.CHAR(200)"
+                }
+            },
+            "indexes": []
+        },
+        "Comments": {
+            "tableName": "Comments",
+            "schema": {
+                "id": {
+                    "autoIncrement": true,
+                    "primaryKey": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "userID": {
+                    "references": {
+                        "model": "Users",
+                        "key": "id"
+                    },
+                    "onUpdate": "CASCADE",
+                    "field": "userID",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "postID": {
+                    "references": {
+                        "model": "Posts",
+                        "key": "id"
+                    },
+                    "onUpdate": "CASCADE",
+                    "field": "postID",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "text": {
+                    "allowNull": false,
+                    "field": "text",
+                    "seqType": "Sequelize.TEXT"
+                },
+                "publicationTime": {
+                    "allowNull": false,
+                    "field": "publicationTime",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
+        "Likes": {
+            "tableName": "Likes",
+            "schema": {
+                "id": {
+                    "autoIncrement": true,
+                    "primaryKey": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "userID": {
+                    "allowNull": false,
+                    "references": {
+                        "model": "Users",
+                        "key": "id"
+                    },
+                    "onUpdate": "CASCADE",
+                    "field": "userID",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "postID": {
+                    "allowNull": false,
+                    "references": {
+                        "model": "Posts",
+                        "key": "id"
+                    },
+                    "onUpdate": "CASCADE",
+                    "field": "postID",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "publicationTime": {
+                    "allowNull": false,
+                    "field": "publicationTime",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
+        "Messages": {
+            "tableName": "Messages",
+            "schema": {
+                "id": {
+                    "autoIncrement": true,
+                    "primaryKey": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "senderID": {
+                    "allowNull": false,
+                    "references": {
+                        "model": "Users",
+                        "key": "id"
+                    },
+                    "onUpdate": "CASCADE",
+                    "field": "senderID",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "recipientID": {
+                    "references": {
+                        "model": "Users",
+                        "key": "id"
+                    },
+                    "onUpdate": "CASCADE",
+                    "field": "recipientID",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "chatID": {
+                    "references": {
+                        "model": "Chats",
+                        "key": "id"
+                    },
+                    "onUpdate": "CASCADE",
+                    "field": "chatID",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "text": {
+                    "field": "text",
+                    "seqType": "Sequelize.TEXT"
+                },
+                "image": {
+                    "field": "image",
+                    "seqType": "Sequelize.CHAR(500)"
+                },
+                "sendingTime": {
+                    "allowNull": false,
+                    "field": "sendingTime",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
+        "Posts": {
+            "tableName": "Posts",
+            "schema": {
+                "id": {
+                    "autoIncrement": true,
+                    "primaryKey": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "text": {
+                    "field": "text",
+                    "seqType": "Sequelize.STRING"
+                },
+                "image": {
+                    "field": "image",
+                    "seqType": "Sequelize.CHAR(500)"
+                },
+                "publicationDate": {
+                    "field": "publicationDate",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
         "Users": {
             "tableName": "Users",
             "schema": {
@@ -9,24 +185,99 @@
                     "field": "id",
                     "seqType": "Sequelize.INTEGER"
                 },
-                "firstName": {
-                    "field": "firstName",
+                "firstname": {
+                    "field": "firstname",
                     "seqType": "Sequelize.STRING"
                 },
-                "lastName": {
-                    "field": "lastName",
+                "lastname": {
+                    "field": "lastname",
                     "seqType": "Sequelize.STRING"
+                },
+                "department": {
+                    "field": "department",
+                    "seqType": "Sequelize.CHAR(100)"
+                },
+                "position": {
+                    "field": "position",
+                    "seqType": "Sequelize.CHAR(50)"
                 },
                 "telegram": {
                     "field": "telegram",
+                    "seqType": "Sequelize.CHAR(500)"
+                },
+                "whatsapp": {
+                    "field": "whatsapp",
+                    "seqType": "Sequelize.CHAR(500)"
+                },
+                "phoneNumber": {
+                    "field": "phoneNumber",
+                    "seqType": "Sequelize.CHAR(30)"
+                },
+                "birthDate": {
+                    "field": "birthDate",
+                    "seqType": "Sequelize.DATEONLY"
+                },
+                "isAdmin": {
+                    "field": "isAdmin",
+                    "seqType": "Sequelize.BOOLEAN"
+                },
+                "lastCode": {
+                    "field": "lastCode",
                     "seqType": "Sequelize.STRING"
                 }
             },
             "indexes": []
+        },
+        "UserChats": {
+            "tableName": "UserChats",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "userID": {
+                    "allowNull": false,
+                    "references": {
+                        "model": "Users",
+                        "key": "id"
+                    },
+                    "onUpdate": "CASCADE",
+                    "field": "userID",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "chatID": {
+                    "references": {
+                        "model": "Chats",
+                        "key": "id"
+                    },
+                    "onUpdate": "CASCADE",
+                    "field": "chatID",
+                    "seqType": "Sequelize.INTEGER"
+                }
+            },
+            "indexes": {
+                "61fd8eb22acfb419b69d014aa0e9ac7d96028969": {
+                    "unique": true,
+                    "fields": [
+                        "userID",
+                        "chatID"
+                    ],
+                    "name": "user_chats_user_i_d_chat_i_d",
+                    "options": {
+                        "indexName": "user_chats_user_i_d_chat_i_d",
+                        "name": "user_chats_user_i_d_chat_i_d",
+                        "indicesType": "UNIQUE",
+                        "type": "UNIQUE"
+                    }
+                }
+            }
         }
     },
     "path": "/Users/ashurovgeorgy/Desktop/Проекты/SEMPchat/SEMP-backend/migrations/_current.json",
     "backupPath": "/Users/ashurovgeorgy/Desktop/Проекты/SEMPchat/SEMP-backend/migrations/_current_bak.json",
-    "exists": false,
-    "revision": 1
+    "exists": true,
+    "revision": 4
 }

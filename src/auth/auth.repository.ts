@@ -1,5 +1,5 @@
-const { dbConf, redisConf } = require("../../db");
-const User = require("../../models/user");
+const { dbConf, redisConf } = require('../../db');
+const User = require('../../models/user');
 
 class AuthRepository {
   static async codeGen(telegram: string, code: string) {
@@ -24,8 +24,11 @@ class AuthRepository {
 
   static async getTelegramBySessionID(sessionID: string) {
     const telegram = await redisConf.get(sessionID);
-    // console.log("telegram is", telegram);
     return telegram;
+  }
+
+  static async logout(sessionID: string) {
+    await redisConf.del(sessionID);
   }
 }
 

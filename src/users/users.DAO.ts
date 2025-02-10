@@ -1,8 +1,8 @@
-const { UsersRepository } = require("./users.repository");
-const { AuthRepository } = require("../auth/auth.repository");
-const { CustomError } = require("../consts");
-import crypto from "crypto";
-import { User } from "./types";
+const { UsersRepository } = require('./users.repository');
+const { AuthRepository } = require('../auth/auth.repository');
+const { CustomError } = require('../consts');
+import crypto from 'crypto';
+import { User } from './types';
 
 class UsersDAO {
   // TODO: Сделать валидацию полей пользователя
@@ -40,9 +40,11 @@ class UsersDAO {
 
   static async getCurrentUser(sessionID: string) {
     try {
+      // console.log('session', sessionID);
       const currentUser: User = await UsersRepository.getUserBySessionID(
         sessionID
       );
+      // console.log('current user', currentUser);
       if (!currentUser) {
         throw new CustomError(
           `you don't have permission to update user data`,
@@ -120,6 +122,7 @@ class UsersDAO {
           birthDate
         );
       } else {
+        console.log('ELSEE');
         throw new CustomError(
           `you don't have permission to update user data`,
           403
