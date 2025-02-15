@@ -1,4 +1,5 @@
-const Post = require("../../models/post");
+const Post = require('../../models/post');
+const Comment = require('../../models/comment');
 
 class PostsRepository {
   static async getPosts() {
@@ -9,6 +10,24 @@ class PostsRepository {
       throw e;
     }
   }
+
+  // static async getPosts() {
+  //   try {
+  //     const posts = await Post.findAll({
+  //       include: [
+  //         {
+  //           model: Comment,
+  //           as: 'comments',
+  //         },
+  //       ],
+  //     });
+  //     console.log('posts', posts);
+  //     return posts;
+  //   } catch (e) {
+  //     console
+  //     throw e;
+  //   }
+  // }
 
   static async getPost(id: number) {
     try {
