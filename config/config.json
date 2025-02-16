@@ -1,6 +1,6 @@
 {
   "development": {
-    "username": "ashurovgeorgy",
+    "username": "g.ashurov",
     "password": "13082003",
     "database": "semp",
     "host": "localhost",
@@ -8,7 +8,7 @@
     "dialect": "postgres"
   },
   "test": {
-    "username": "ashurovgeorgy",
+    "username": "g.ashurov",
     "password": "13082003",
     "database": "semp",
     "host": "localhost",
@@ -16,7 +16,7 @@
     "dialect": "postgres"
   },
   "production": {
-    "username": "ashurovgeorgy",
+    "username": "g.ashurov",
     "password": "13082003",
     "database": "semp",
     "host": "localhost",

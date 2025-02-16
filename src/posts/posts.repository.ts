@@ -1,33 +1,42 @@
 const Post = require('../../models/post');
 const Comment = require('../../models/comment');
+const User = require('../../models/user')
+const PostData = require('./types')
+const CommentData = require('./types')
 
 class PostsRepository {
   static async getPosts() {
     try {
       const posts = await Post().findAll();
-      return posts;
+
+      const postsWithComments = await Promise.all(
+        posts.map(async (post: typeof PostData) => {
+          const comments = await Comment().findAll({
+            where: { postID: post.id },
+          });
+
+          const commentsWithUsers = await Promise.all(
+            comments.map(async (comment: typeof CommentData) => {
+              const user = await User().findByPk(comment.userID);
+              return {
+                ...comment.toJSON(),
+                user: {
+                  firstname: user.firstname,
+                  lastname: user.lastname,
+                },
+              };
+            })
+          );
+
+          return { ...post.toJSON(), comments: commentsWithUsers };
+        })
+      );
+
+      return postsWithComments;
     } catch (e) {
       throw e;
     }
   }
-
-  // static async getPosts() {
-  //   try {
-  //     const posts = await Post.findAll({
-  //       include: [
-  //         {
-  //           model: Comment,
-  //           as: 'comments',
-  //         },
-  //       ],
-  //     });
-  //     console.log('posts', posts);
-  //     return posts;
-  //   } catch (e) {
-  //     console
-  //     throw e;
-  //   }
-  // }
 
   static async getPost(id: number) {
     try {
