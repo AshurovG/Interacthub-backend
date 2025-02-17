@@ -3,12 +3,12 @@ const Comment = require('../../models/comment');
 const User = require('../../models/user')
 const PostData = require('./types')
 const CommentData = require('./types')
+const { minioClient } = require('../../db')
 
 class PostsRepository {
   static async getPosts() {
     try {
       const posts = await Post().findAll();
-
       const postsWithComments = await Promise.all(
         posts.map(async (post: typeof PostData) => {
           const comments = await Comment().findAll({
@@ -32,6 +32,7 @@ class PostsRepository {
         })
       );
 
+      console.log(postsWithComments)
       return postsWithComments;
     } catch (e) {
       throw e;
@@ -47,15 +48,21 @@ class PostsRepository {
     }
   }
 
-  static async postPost(text: string, image: string, publicationDate: Date) {
+  static async postPost(text: string, image: any, publicationDate: Date) {
     try {
+      const fileName = `posts/${image.originalname}`;
+
+      await minioClient.putObject('semp', fileName, image.buffer);
+
       const newPost = await Post().build({
         text,
-        image,
+        image: `http://localhost:9000/semp/${fileName}`,
         publicationDate,
       });
+
       await newPost.save();
     } catch (e) {
+      console.log(e)
       throw e;
     }
   }

@@ -33,7 +33,7 @@ class PostsDAO {
     }
   }
 
-  static async postPost(text: string, image: string) {
+  static async postPost(text: string, image: any) {
     try {
       this._isImageOrTextEmpty(text, image);
       const currentDate = new Date();

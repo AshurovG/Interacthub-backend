@@ -276,8 +276,8 @@
             }
         }
     },
-    "path": "/Users/ashurovgeorgy/Desktop/Проекты/SEMPchat/SEMP-backend/migrations/_current.json",
-    "backupPath": "/Users/ashurovgeorgy/Desktop/Проекты/SEMPchat/SEMP-backend/migrations/_current_bak.json",
-    "exists": true,
-    "revision": 4
+    "path": "/Users/g.ashurov/Desktop/pr/SEMP/SEMP-backend/migrations/_current.json",
+    "backupPath": "/Users/g.ashurov/Desktop/pr/SEMP/SEMP-backend/migrations/_current_bak.json",
+    "exists": false,
+    "revision": 1
 }

@@ -2,6 +2,10 @@ const { PostsDAO } = require("./posts.DAO");
 const { ErrorHandler } = require("../consts");
 import { Response, Request } from "express";
 
+interface MulterRequest extends Request {
+  file?: any;
+}
+
 class PostsCotroller {
   async getPosts(_: Request, res: Response): Promise<void> {
     try {
@@ -12,9 +16,10 @@ class PostsCotroller {
     }
   }
 
-  async postPost(req: Request, res: Response): Promise<void> {
-    const { text, image } = req.body;
-
+  async postPost(req: MulterRequest, res: Response): Promise<void> {
+    const { text } = req.body;
+    const image = req.file;
+    
     try {
       await PostsDAO.postPost(text, image);
       res.sendStatus(200);

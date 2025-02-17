@@ -56,4 +56,5 @@ module.exports = {
   dbConf,
   redisConf,
   handleRedisOperation,
+  minioClient
 };
