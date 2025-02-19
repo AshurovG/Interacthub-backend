@@ -1,9 +1,9 @@
 const Post = require('../../models/post');
 const Comment = require('../../models/comment');
-const User = require('../../models/user')
-const PostData = require('./types')
-const CommentData = require('./types')
-const { minioClient } = require('../../db')
+const User = require('../../models/user');
+const PostData = require('./types');
+const CommentData = require('./types');
+const { minioClient } = require('../../db');
 
 class PostsRepository {
   static async getPosts() {
@@ -32,7 +32,6 @@ class PostsRepository {
         })
       );
 
-      console.log(postsWithComments)
       return postsWithComments;
     } catch (e) {
       throw e;
@@ -50,19 +49,24 @@ class PostsRepository {
 
   static async postPost(text: string, image: any, publicationDate: Date) {
     try {
-      const fileName = `posts/${image.originalname}`;
-
-      await minioClient.putObject('semp', fileName, image.buffer);
+      if (image) {
+        await minioClient.putObject(
+          'semp',
+          `posts/${image.originalname}`,
+          image.buffer
+        );
+      }
 
       const newPost = await Post().build({
         text,
-        image: `http://localhost:9000/semp/${fileName}`,
+        ...(image && {
+          image: `http://localhost:9000/semp/posts/${image.originalname}`,
+        }),
         publicationDate,
       });
 
       await newPost.save();
     } catch (e) {
-      console.log(e)
       throw e;
     }
   }

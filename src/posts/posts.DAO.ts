@@ -15,9 +15,13 @@ class PostsDAO {
   static async getPosts() {
     try {
       const query = await PostsRepository.getPosts();
+      query.sort((post1: any, post2: any) => {
+        return new Date(post2.publicationDate).getTime() - new Date(post1.publicationDate).getTime();
+      });
       return query;
     } catch (e) {
-      throw e;
+      console.log(e)
+        throw e;
     }
   }
 
