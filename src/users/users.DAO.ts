@@ -95,7 +95,8 @@ class UsersDAO {
     phoneNumber: string,
     birthDate: string,
     isAdmin: boolean,
-    sessionID: string
+    sessionID: string,
+    image: any
   ) {
     try {
       const currentUser = await this.getCurrentUser(sessionID);
@@ -110,7 +111,8 @@ class UsersDAO {
           whatsapp,
           phoneNumber,
           birthDate,
-          isAdmin
+          isAdmin,
+          image
         );
       } else if (String(currentUser.id) === id && !currentUser.isAdmin) {
         await UsersRepository.updateUser(
@@ -119,10 +121,10 @@ class UsersDAO {
           lastname,
           whatsapp,
           phoneNumber,
-          birthDate
+          birthDate,
+          image
         );
       } else {
-        console.log('ELSEE');
         throw new CustomError(
           `you don't have permission to update user data`,
           403

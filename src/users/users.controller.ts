@@ -64,6 +64,8 @@ class UsersCotroller {
       birthDate,
       isAdmin,
     } = req.body;
+    const image = req.file;
+    console.log('req file', image);
     const sessionID = (req.cookies['sessionID'] = req.cookies['sessionID']);
     const { id } = req.params;
 
@@ -78,7 +80,8 @@ class UsersCotroller {
         phoneNumber,
         birthDate,
         isAdmin,
-        sessionID
+        sessionID,
+        image
       );
       res.sendStatus(200);
     } catch (e) {

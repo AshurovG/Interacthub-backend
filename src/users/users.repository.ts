@@ -2,6 +2,7 @@ const { dbConf, redisConf, handleRedisOperation } = require('../../db');
 const User = require('../../models/user');
 const { AuthRepository } = require('../auth/auth.repository');
 const { Sequelize, DataTypes } = require('sequelize');
+const { minioClient } = require('../../db');
 import _ from 'lodash';
 
 class UsersRepository {
@@ -80,11 +81,19 @@ class UsersRepository {
     whatsapp: string,
     phoneNumber: string,
     birthDate: string,
-    isAdmin: boolean
+    isAdmin: boolean,
+    image: any
   ) {
     try {
-      console.log('repository');
-      console.log(id, typeof id);
+      if (image) {
+        await minioClient.putObject(
+          'semp',
+          `users/${image.originalname}`,
+          image.buffer
+        );
+      }
+
+      console.log('image', image);
       await User().update(
         {
           firstname,
@@ -95,6 +104,9 @@ class UsersRepository {
           phoneNumber,
           birthDate,
           isAdmin,
+          ...(image && {
+            avatar: `http://localhost:9000/semp/users/${image.originalname}`,
+          }),
         },
         { where: { id } }
       );
