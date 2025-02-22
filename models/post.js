@@ -1,8 +1,8 @@
-const { dbConf } = require("../db"); // Импорт экземпляра Sequelize из db.js
-const { DataTypes } = require("sequelize");
+const { dbConf } = require('../db'); // Импорт экземпляра Sequelize из db.js
+const { DataTypes } = require('sequelize');
 
 module.exports = () => {
-  const Post = dbConf.define("Post", {
+  const Post = dbConf.define('Post', {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -12,7 +12,7 @@ module.exports = () => {
       type: DataTypes.STRING,
     },
     image: {
-      type: DataTypes.CHAR(500),
+      type: DataTypes.STRING,
     },
     publicationDate: DataTypes.DATE,
   });
